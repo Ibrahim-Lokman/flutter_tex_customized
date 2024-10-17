@@ -5,6 +5,7 @@ import 'package:flutter_tex_example/tex_view_fonts_example.dart';
 import 'package:flutter_tex_example/tex_view_image_video_example.dart';
 import 'package:flutter_tex_example/tex_view_ink_well_example.dart';
 import 'package:flutter_tex_example/tex_view_markdown_example.dart';
+import 'package:flutter_tex_example/tex_view_quiz.dart';
 import 'package:flutter_tex_example/tex_view_quiz_example.dart';
 
 main() {
@@ -87,6 +88,12 @@ class _TeXViewFullExampleState extends State<TeXViewFullExample> {
               context,
               'Quiz Example',
               TeXViewQuizExample(
+                renderingEngine: renderingEngine,
+              )),
+          getExampleButton(
+              context,
+              'Quiz Example Rnd',
+              TeXViewQuizRnd(
                 renderingEngine: renderingEngine,
               )),
           getExampleButton(
