@@ -26,7 +26,6 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
           onPageFinished: (String url) {
             _pageLoaded = true;
             _initTeXView();
-            _controller.runJavaScript("window.scrollTo(0, 0);");
           },
         ),
       )
@@ -63,13 +62,12 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
               : 0
           : 0,
       children: <Widget>[
-        Text("data"),
-        // SizedBox(
-        //   height: _height,
-        //   child: WebViewWidget(
-        //     controller: _controller,
-        //   ),
-        // ),
+        SizedBox(
+          height: _height,
+          child: WebViewWidget(
+            controller: _controller,
+          ),
+        ),
         widget.loadingWidgetBuilder?.call(context) ?? const SizedBox.shrink()
       ],
     );
@@ -86,6 +84,7 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
       if (widget.loadingWidgetBuilder != null) _height = minHeight;
       _controller
           .runJavaScriptReturningResult("initView(${getRawData(widget)})");
+      _controller.runJavaScriptReturningResult("window.scrollTo(0, 0);");
       _lastData = getRawData(widget);
     }
   }
