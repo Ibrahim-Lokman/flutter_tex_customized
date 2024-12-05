@@ -24,7 +24,7 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (String url) {
-            _pageLoaded = true;
+            _pageLoaded = false;
             _initTeXView();
           },
         ),
@@ -83,9 +83,9 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
   void _initTeXView() {
     if (_pageLoaded && getRawData(widget) != _lastData) {
       if (widget.loadingWidgetBuilder != null) _height = minHeight;
-      _controller.runJavaScriptReturningResult(
-          "initView(${getRawData(widget)}) Demo DemoDemoDemoDemo");
-      _controller.runJavaScriptReturningResult("window.scrollTo(0, 0);");
+      _controller
+          .runJavaScriptReturningResult("initView(${getRawData(widget)})");
+      // _controller.runJavaScriptReturningResult("window.scrollTo(0, 0);");
       _lastData = getRawData(widget);
     }
   }
