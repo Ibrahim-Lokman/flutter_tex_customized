@@ -26,6 +26,7 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
           onPageFinished: (String url) {
             _pageLoaded = true;
             _initTeXView();
+            _controller.runJavaScript("window.scrollTo(0, 0);");
           },
         ),
       )
