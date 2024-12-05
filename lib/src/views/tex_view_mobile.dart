@@ -63,11 +63,16 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
               : 0
           : 0,
       children: <Widget>[
-        SizedBox(
-          height: _height,
-          child: WebViewWidget(
-            controller: _controller,
-          ),
+        Column(
+          children: [
+            SizedBox(
+              height: _height,
+              child: WebViewWidget(
+                controller: _controller,
+              ),
+            ),
+            Text("data")
+          ],
         ),
         widget.loadingWidgetBuilder?.call(context) ?? const SizedBox.shrink()
       ],
