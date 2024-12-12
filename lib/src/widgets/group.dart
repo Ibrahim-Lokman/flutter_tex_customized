@@ -11,21 +11,26 @@ class TeXViewGroup extends TeXViewWidget {
   /// On Tap Callback when a child is tapped.
   final Function(String id)? onTap;
 
-  /// On Tap Callback when a child is tapped.
+  /// On Tap Callback when multiple items are selected.
   final Function(List<String> ids)? onItemsSelection;
 
   /// Style TeXView Widget with [TeXViewStyle].
   final TeXViewStyle? style;
 
-  /// Style TeXView Widget with [TeXViewStyle].
+  /// Style for selected items.
   final TeXViewStyle? selectedItemStyle;
 
-  /// Style TeXView Widget with [TeXViewStyle].
+  /// Style for normal (unselected) items.
   final TeXViewStyle? normalItemStyle;
+
+  /// Whether the group allows single or multiple selection.
   final bool single;
 
-  // Add a new field to store the currently selected item
+  /// Selected item ID (for single selection).
   final String? selectedItemId;
+
+  /// List of selected item IDs (for multiple selection).
+  final List<String>? selectedItemIds;
 
   const TeXViewGroup({
     required this.children,
@@ -33,8 +38,9 @@ class TeXViewGroup extends TeXViewWidget {
     this.style,
     this.selectedItemStyle,
     this.normalItemStyle,
-    this.selectedItemId, // Add this parameter
+    this.selectedItemId, // Add selectedItemId for single selection
   })  : onItemsSelection = null,
+        selectedItemIds = null,
         single = true;
 
   const TeXViewGroup.multipleSelection({
@@ -43,8 +49,9 @@ class TeXViewGroup extends TeXViewWidget {
     this.style,
     this.selectedItemStyle,
     this.normalItemStyle,
-    this.selectedItemId, // Add this parameter
+    this.selectedItemIds,
   })  : onTap = null,
+        selectedItemId = null,
         single = false;
 
   @override
@@ -56,11 +63,15 @@ class TeXViewGroup extends TeXViewWidget {
   @override
   void onTapCallback(String id) {
     if (single) {
-      for (TeXViewGroupItem child in children) {
-        if (child.id == id) onTap!(id);
-      }
+      onTap!(id); // Trigger single selection callback
     } else {
-      onItemsSelection!((jsonDecode(id) as List<dynamic>).cast<String>());
+      final ids = selectedItemIds ?? [];
+      if (ids.contains(id)) {
+        ids.remove(id);
+      } else {
+        ids.add(id);
+      }
+      onItemsSelection!(ids); // Trigger multiple selection callback
     }
   }
 
@@ -73,6 +84,7 @@ class TeXViewGroup extends TeXViewWidget {
         'selectedItemStyle':
             selectedItemStyle?.initStyle() ?? teXViewDefaultStyle,
         'normalItemStyle': normalItemStyle?.initStyle() ?? teXViewDefaultStyle,
-        'selectedItemId': selectedItemId, // Add this line
+        'selectedItemId': selectedItemId, // Include selectedItemId
+        'selectedItemIds': selectedItemIds, // Include selectedItemIds
       };
 }
